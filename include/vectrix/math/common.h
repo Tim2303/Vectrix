@@ -10,6 +10,11 @@
 #include <limits>    // std::numeric_limits
 
 namespace vtx::math {
+    // Constants definition
+    constexpr double PI = 3.14159265358979323846; // Pi constant
+    constexpr double D2R = PI / 180.0; // Degrees to radians
+    constexpr double R2D = 180.0 / PI; // Radians to degrees
+
     using std::abs;
     using std::sqrt;
     using std::pow;

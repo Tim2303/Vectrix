@@ -22,6 +22,8 @@ if(VTX_USE_CPP20)
 endif()
 
 # Main library
-add_library(vectrix INTERFACE)
+add_library(vectrix INTERFACE
+        include/vectrix/core/base_vector.h
+        include/vectrix/math/common.h)
 target_include_directories(vectrix INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/include)
 target_compile_definitions(vectrix INTERFACE $<$<BOOL:${VTX_USE_CPP20}>:VTX_CPP20>)

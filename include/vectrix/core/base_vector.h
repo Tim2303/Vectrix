@@ -7,14 +7,15 @@
 
 #include "vectrix/math/common.h"
 
-// Library namespace
+// vtx namespace
 namespace vtx
 {
     // Base vector class of any size
     template<typename T, size_t N>
     class vector {
+        using Float = std::conditional_t<std::is_floating_point_v<T>, T, float>;
     public:
-        T data[N];
+        T elements[N];
 
         // Class default constructor
         constexpr vector( void ) = default;
@@ -22,57 +23,75 @@ namespace vtx
         // One parameter constructor
         constexpr vector( const T num ) noexcept {
             for (size_t i = 0; i < N; ++i) {
-                data[i] = num;
+                elements[i] = num;
             }
         }
 
         // Multiple parameters constructor
         template <typename... Args>
         constexpr vector( Args... args ) noexcept {
+            static_assert(sizeof...(Args) <= N, "Too many constructor arguments!");
             static_assert((std::is_convertible_v<Args, T> && ...),
                     "All arguments must be convertible to T!");
 
             size_t i = 0;
-            ((i < N ? (data[i++] = args) : T(0)), ...);
-            while (i < N) data[i++] = T(0);
+            ((i < N ? (elements[i++] = args) : T(0)), ...);
+            while (i < N) elements[i++] = T(0);
         }
 
         // Vectors equality operator
-        constexpr bool operator==( const vector<T, N> &v ) noexcept {
+        constexpr bool operator==( const vector<T, N> &v ) const noexcept {
             for (size_t i = 0; i < N; ++i)
-                if (v.data[i] != data[i])
+                if (v.elements[i] != elements[i])
                     return false;
             return true;
         }
 
         // Vectors unequality operator
-        constexpr bool operator!=( const vector<T, N> &v ) noexcept {
+        constexpr bool operator!=( const vector<T, N> &v ) const noexcept {
             for (size_t i = 0; i < N; ++i)
-                if (v.data[i] != data[i])
+                if (v.elements[i] != elements[i])
                     return true;
             return false;
         }
 
-        // Pointer cast operator
-        constexpr operator Type*( VOID ) const noexcept {
-            return &data[0];
+        // Pointer cast stl operators
+        constexpr T* data() noexcept {
+            return elements;
+        }
+        constexpr const T* data() const noexcept {
+            return elements;
+        }
+
+        constexpr T* begin() noexcept {
+            return elements;
+        }
+        constexpr const T* begin() const noexcept {
+            return elements;
+        }
+
+        constexpr T* end() noexcept {
+            return elements + N;
+        }
+        constexpr const T* end() const noexcept {
+            return elements + N;
         }
 
         // Component getter operator
-        constexpr Type operator[]( const size_t ind ) const {
-            return *(&data[0] + ind);
+        constexpr T operator[]( const size_t ind ) const {
+            return elements[ind];
         }
 
         // Component reference getter operator
-        constexpr Type & operator[]( const size_t ind ) {
-            return *(&data[0] + ind);
+        constexpr T & operator[]( const size_t ind ) {
+            return elements[ind];
         }
 
         // Negate operator
         constexpr vector<T, N> operator-( void ) const noexcept {
             vector<T, N> result;
             for (size_t i = 0; i < N; ++i) {
-                result.data[i] = -data[i];
+                result.elements[i] = -elements[i];
             }
 
             return result;
@@ -82,7 +101,7 @@ namespace vtx
         constexpr vector<T, N> operator+( const vector<T, N> &v ) const noexcept {
             vector<T, N> result;
             for (size_t i = 0; i < N; ++i) {
-                result.data[i] = data[i] + v.data[i];
+                result.elements[i] = elements[i] + v.elements[i];
             }
 
             return result;
@@ -91,7 +110,7 @@ namespace vtx
         // Addition to current operator
         constexpr vector<T, N> operator+=( const vector<T, N> &v ) noexcept {
             for (size_t i = 0; i < N; ++i) {
-                data[i] += v.data[i];
+                elements[i] += v.elements[i];
             }
 
             return *this;
@@ -101,7 +120,7 @@ namespace vtx
         constexpr vector<T, N> operator-( const vector<T, N> &v ) const noexcept {
             vector<T, N> result;
             for (size_t i = 0; i < N; ++i) {
-                result.data[i] = data[i] - v.data[i];
+                result.elements[i] = elements[i] - v.elements[i];
             }
 
             return result;
@@ -110,7 +129,7 @@ namespace vtx
         // Subtraction from current operator
         constexpr vector<T, N> operator-=( const vector<T, N> &v ) noexcept {
             for (size_t i = 0; i < N; ++i) {
-                data[i] -= v.data[i];
+                elements[i] -= v.elements[i];
             }
 
             return *this;
@@ -120,7 +139,7 @@ namespace vtx
         constexpr vector<T, N> operator*( const vector<T, N> &v ) const noexcept {
             vector<T, N> result;
             for (size_t i = 0; i < N; ++i) {
-                result.data[i] = data[i] * v.data[i];
+                result.elements[i] = elements[i] * v.elements[i];
             }
 
             return result;
@@ -129,7 +148,7 @@ namespace vtx
         // Multiplication with current operator
         constexpr vector<T, N> operator*=( const vector<T, N> &v ) noexcept {
             for (size_t i = 0; i < N; ++i) {
-                data[i] *= v.data[i];
+                elements[i] *= v.elements[i];
             }
 
             return *this;
@@ -139,7 +158,7 @@ namespace vtx
         constexpr vector<T, N> operator*( const T n ) const noexcept {
             vector<T, N> result;
             for (size_t i = 0; i < N; ++i) {
-                result.data[i] = data[i] * n;
+                result.elements[i] = elements[i] * n;
             }
 
             return result;
@@ -148,7 +167,7 @@ namespace vtx
         // Multiplication with current operator
         constexpr vector<T, N> operator*=( const T n ) noexcept {
             for (size_t i = 0; i < N; ++i) {
-                data[i] *= n;
+                elements[i] *= n;
             }
 
             return *this;
@@ -158,7 +177,7 @@ namespace vtx
         constexpr vector<T, N> operator/( const vector<T, N> &v ) const noexcept {
             vector<T, N> result;
             for (size_t i = 0; i < N; ++i) {
-                result.data[i] = data[i] / v.data[i];
+                result.elements[i] = elements[i] / v.elements[i];
             }
 
             return result;
@@ -167,7 +186,7 @@ namespace vtx
         // Division from current operator
         constexpr vector<T, N> operator/=( const vector<T, N> &v ) noexcept {
             for (size_t i = 0; i < N; ++i) {
-                data[i] /= v.data[i];
+                elements[i] /= v.elements[i];
             }
 
             return *this;
@@ -177,7 +196,7 @@ namespace vtx
         constexpr vector<T, N> operator/( const T n ) const noexcept {
             vector<T, N> result;
             for (size_t i = 0; i < N; ++i) {
-                result.data[i] = data[i] / n;
+                result.elements[i] = elements[i] / n;
             }
 
             return result;
@@ -186,7 +205,7 @@ namespace vtx
         // Division from current operator
         constexpr vector<T, N> operator/=( const T n ) noexcept {
             for (size_t i = 0; i < N; ++i) {
-                data[i] /= n;
+                elements[i] /= n;
             }
 
             return *this;
@@ -194,19 +213,19 @@ namespace vtx
 
         // Dot product operator
         constexpr T operator&( const vector<T, N> &v ) const noexcept {
-            T sum = 0;
+            T sum = T(0);
             for (size_t i = 0; i < N; ++i) {
-                sum += data[i] * v.data[i];
+                sum += elements[i] * v.elements[i];
             }
 
             return sum;
         }
 
         // Vector length (sq)
-        constexpr T length2( void ) const noexcept {
-            T sum = 0;
+        constexpr T squaredLength( void ) const noexcept {
+            T sum = T(0);
             for (size_t i = 0; i < N; ++i) {
-                sum += data[i] * data[i];
+                sum += elements[i] * elements[i];
             }
 
             return sum;
@@ -214,12 +233,7 @@ namespace vtx
 
         // Vector length
         constexpr T length( void ) const noexcept {
-            T sum = 0;
-            for (size_t i = 0; i < N; ++i) {
-                sum += data[i] * data[i];
-            }
-
-            return sqrt(sum);
+            return sqrt(squaredLength());
         }
 
         // Normalized vector
@@ -234,9 +248,9 @@ namespace vtx
 
         // Maximal component
         constexpr T maxC( void ) const noexcept {
-            T mx = data[0];
+            T mx = elements[0];
             for (size_t i = 1; i < N; ++i) {
-                mx = max(mx, data[i]);
+                mx = math::max(mx, elements[i]);
             }
 
             return mx;
@@ -244,9 +258,9 @@ namespace vtx
 
         // Minimal component
         constexpr T minC( void ) const noexcept {
-            T mn = data[0];
+            T mn = elements[0];
             for (size_t i = 1; i < N; ++i) {
-                mn = min(mn, data[i]);
+                mn = math::min(mn, elements[i]);
             }
 
             return mn;
@@ -256,7 +270,7 @@ namespace vtx
         constexpr vector<T, N> lerp( const vector<T, N> &v, const T coef ) const noexcept {
             vector<T, N> res;
             for (size_t i = 0; i < N; ++i) {
-                res.data[i] = data[i] + coef * (v.data[i] - data[i]);
+                res.elements[i] = elements[i] + coef * (v.elements[i] - elements[i]);
             }
 
             return res;
@@ -266,7 +280,7 @@ namespace vtx
         constexpr vector<T, N> maxV( const vector<T, N> &v ) const noexcept {
             vector<T, N> res;
             for (size_t i = 0; i < N; ++i) {
-                res[i] = max(data[i], v.data[i]);
+                res.elements[i] = math::max(elements[i], v.elements[i]);
             }
 
             return res;
@@ -276,15 +290,73 @@ namespace vtx
         constexpr vector<T, N> minV( const vector<T, N> &v ) const noexcept {
             vector<T, N> res;
             for (size_t i = 0; i < N; ++i) {
-                res[i] = min(data[i], v.data[i]);
+                res.elements[i] = math::min(elements[i], v.elements[i]);
             }
 
             return res;
         }
 
+        // Ceil vector components
+        constexpr vector<T, N> ceil( void ) const noexcept {
+            vector<T, N> res;
+            for (size_t i = 0; i < N; ++i) {
+                res.elements[i] = math::ceil(elements[i]);
+            }
 
-        /// TODO: Other from file Z:\CPP\mth\tcr_mth_vec3.h
+            return res;
+        }
 
+        // Floor vector components
+        constexpr vector<T, N> floor( void ) const noexcept {
+            vector<T, N> res;
+            for (size_t i = 0; i < N; ++i) {
+                res.elements[i] = math::floor(elements[i]);
+            }
+
+            return res;
+        }
+
+        // Vector components composition
+        constexpr T volume( void ) const noexcept {
+            T result = T(1);
+            for (size_t i = 0; i < N; ++i) {
+                result *= elements[i];
+            }
+
+            return result;
+        }
+
+        // TODO: Replace rand() with <random> and std::uniform_real_distribution
+
+        // Get random components vector
+        static vector<T, N> rand( void ) noexcept {
+            vector<T, N> res;
+            for (size_t i = 0; i < N; ++i) {
+                res.elements[i] = static_cast<T>(std::rand());
+            }
+
+            return res;
+        }
+
+        // Get random components [0;1] vector
+        static vector<T, N> rand0( void ) noexcept {
+            vector<T, N> res;
+            for (size_t i = 0; i < N; ++i) {
+                res.elements[i] = static_cast<T>((double)std::rand() / RAND_MAX);
+            }
+
+            return res;
+        }
+
+        // Get random components [-1;1] vector
+        static vector<T, N> rand1( void ) noexcept {
+            vector<T, N> res;
+            for (size_t i = 0; i < N; ++i) {
+                res.elements[i] = static_cast<T>((double)std::rand() / RAND_MAX * 2 - 1);
+            }
+
+            return res;
+        }
 
     }; // class vector
 
