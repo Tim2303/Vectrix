@@ -5,6 +5,8 @@
 #ifndef VECTRIX_BASE_VECTOR_H
 #define VECTRIX_BASE_VECTOR_H
 
+#include "vectrix/math/common.h"
+
 // Library namespace
 namespace vtx
 {
@@ -284,7 +286,8 @@ namespace vtx
         /// TODO: Other from file Z:\CPP\mth\tcr_mth_vec3.h
 
 
-    }; /* End of 'vector' class */
-} /* End of 'vtx' namespace */
+    }; // class vector
+
+} // namespace vtx
 
 #endif //VECTRIX_BASE_VECTOR_H
