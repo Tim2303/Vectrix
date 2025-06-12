@@ -5,7 +5,7 @@
 #ifndef VECTRIX_BASE_VECTOR_H
 #define VECTRIX_BASE_VECTOR_H
 
-#include "vectrix/math/common.h"
+#include <vectrix/math/common.h>
 
 // vtx namespace
 namespace vtx

@@ -27,3 +27,6 @@ add_library(vectrix INTERFACE
         include/vectrix/math/common.h)
 target_include_directories(vectrix INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/include)
 target_compile_definitions(vectrix INTERFACE $<$<BOOL:${VTX_USE_CPP20}>:VTX_CPP20>)
+
+add_executable(vectrix_test src/main.cpp)
+target_link_libraries(vectrix_test PRIVATE vectrix)
