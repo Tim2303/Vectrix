@@ -18,10 +18,10 @@ namespace vtx
         T elements[N];
 
         // Class default constructor
-        constexpr vector( void ) = default;
+        constexpr vector( ) = default;
 
         // One parameter constructor
-        constexpr vector( const T num ) noexcept {
+        constexpr explicit vector( const T num ) noexcept {
             for (size_t i = 0; i < N; ++i) {
                 elements[i] = num;
             }
@@ -29,7 +29,7 @@ namespace vtx
 
         // Multiple parameters constructor
         template <typename... Args>
-        constexpr vector( Args... args ) noexcept {
+        constexpr explicit vector( Args... args ) noexcept {
             static_assert(sizeof...(Args) <= N, "Too many constructor arguments!");
             static_assert((std::is_convertible_v<Args, T> && ...),
                     "All arguments must be convertible to T!");
@@ -88,7 +88,7 @@ namespace vtx
         }
 
         // Negate operator
-        constexpr vector<T, N> operator-( void ) const noexcept {
+        constexpr vector<T, N> operator-( ) const noexcept {
             vector<T, N> result;
             for (size_t i = 0; i < N; ++i) {
                 result.elements[i] = -elements[i];
@@ -222,7 +222,7 @@ namespace vtx
         }
 
         // Vector length (sq)
-        constexpr T squaredLength( void ) const noexcept {
+        constexpr T squaredLength( ) const noexcept {
             T sum = T(0);
             for (size_t i = 0; i < N; ++i) {
                 sum += elements[i] * elements[i];
@@ -232,22 +232,22 @@ namespace vtx
         }
 
         // Vector length
-        constexpr T length( void ) const noexcept {
+        constexpr T length( ) const noexcept {
             return sqrt(squaredLength());
         }
 
         // Normalized vector
-        constexpr vector<T, N> normalized( void ) const noexcept {
+        constexpr vector<T, N> normalized( ) const noexcept {
             return *this / length();
         }
 
         // Normalize current vector
-        constexpr vector<T, N> & normalize( void ) noexcept {
+        constexpr vector<T, N> & normalize( ) noexcept {
             return *this /= length();
         }
 
         // Maximal component
-        constexpr T maxC( void ) const noexcept {
+        constexpr T maxC( ) const noexcept {
             T mx = elements[0];
             for (size_t i = 1; i < N; ++i) {
                 mx = math::max(mx, elements[i]);
@@ -257,7 +257,7 @@ namespace vtx
         }
 
         // Minimal component
-        constexpr T minC( void ) const noexcept {
+        constexpr T minC( ) const noexcept {
             T mn = elements[0];
             for (size_t i = 1; i < N; ++i) {
                 mn = math::min(mn, elements[i]);
@@ -297,7 +297,7 @@ namespace vtx
         }
 
         // Ceil vector components
-        constexpr vector<T, N> ceil( void ) const noexcept {
+        constexpr vector<T, N> ceil( ) const noexcept {
             vector<T, N> res;
             for (size_t i = 0; i < N; ++i) {
                 res.elements[i] = math::ceil(elements[i]);
@@ -307,7 +307,7 @@ namespace vtx
         }
 
         // Floor vector components
-        constexpr vector<T, N> floor( void ) const noexcept {
+        constexpr vector<T, N> floor( ) const noexcept {
             vector<T, N> res;
             for (size_t i = 0; i < N; ++i) {
                 res.elements[i] = math::floor(elements[i]);
@@ -317,7 +317,7 @@ namespace vtx
         }
 
         // Vector components composition
-        constexpr T volume( void ) const noexcept {
+        constexpr T volume( ) const noexcept {
             T result = T(1);
             for (size_t i = 0; i < N; ++i) {
                 result *= elements[i];
@@ -329,7 +329,7 @@ namespace vtx
         // TODO: Replace rand() with <random> and std::uniform_real_distribution
 
         // Get random components vector
-        static vector<T, N> rand( void ) noexcept {
+        static vector<T, N> rand( ) noexcept {
             vector<T, N> res;
             for (size_t i = 0; i < N; ++i) {
                 res.elements[i] = static_cast<T>(std::rand());
@@ -339,7 +339,7 @@ namespace vtx
         }
 
         // Get random components [0;1] vector
-        static vector<T, N> rand0( void ) noexcept {
+        static vector<T, N> rand0( ) noexcept {
             vector<T, N> res;
             for (size_t i = 0; i < N; ++i) {
                 res.elements[i] = static_cast<T>((double)std::rand() / RAND_MAX);
@@ -349,7 +349,7 @@ namespace vtx
         }
 
         // Get random components [-1;1] vector
-        static vector<T, N> rand1( void ) noexcept {
+        static vector<T, N> rand1( ) noexcept {
             vector<T, N> res;
             for (size_t i = 0; i < N; ++i) {
                 res.elements[i] = static_cast<T>((double)std::rand() / RAND_MAX * 2 - 1);
