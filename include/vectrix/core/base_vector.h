@@ -40,15 +40,15 @@ namespace vtx
         }
 
         // Vectors equality operator
-        constexpr bool operator==( const vector<T, N> &v ) const noexcept {
+        constexpr bool operator==( const vector &v ) const noexcept {
             for (size_t i = 0; i < N; ++i)
                 if (v.elements[i] != elements[i])
                     return false;
             return true;
         }
 
-        // Vectors unequality operator
-        constexpr bool operator!=( const vector<T, N> &v ) const noexcept {
+        // Vectors inequality operator
+        constexpr bool operator!=( const vector &v ) const noexcept {
             for (size_t i = 0; i < N; ++i)
                 if (v.elements[i] != elements[i])
                     return true;
@@ -87,9 +87,9 @@ namespace vtx
             return elements[ind];
         }
 
-        // Negate operator
-        constexpr vector<T, N> operator-( ) const noexcept {
-            vector<T, N> result;
+        // Negation operator
+        constexpr vector operator-( ) const noexcept {
+            vector result;
             for (size_t i = 0; i < N; ++i) {
                 result.elements[i] = -elements[i];
             }
@@ -98,8 +98,8 @@ namespace vtx
         }
 
         // Addition operator
-        constexpr vector<T, N> operator+( const vector<T, N> &v ) const noexcept {
-            vector<T, N> result;
+        constexpr vector operator+( const vector &v ) const noexcept {
+            vector result;
             for (size_t i = 0; i < N; ++i) {
                 result.elements[i] = elements[i] + v.elements[i];
             }
@@ -108,7 +108,7 @@ namespace vtx
         }
 
         // Addition to current operator
-        constexpr vector<T, N> operator+=( const vector<T, N> &v ) noexcept {
+        constexpr vector operator+=( const vector &v ) noexcept {
             for (size_t i = 0; i < N; ++i) {
                 elements[i] += v.elements[i];
             }
@@ -117,8 +117,8 @@ namespace vtx
         }
 
         // Subtraction operator
-        constexpr vector<T, N> operator-( const vector<T, N> &v ) const noexcept {
-            vector<T, N> result;
+        constexpr vector operator-( const vector &v ) const noexcept {
+            vector result;
             for (size_t i = 0; i < N; ++i) {
                 result.elements[i] = elements[i] - v.elements[i];
             }
@@ -127,7 +127,7 @@ namespace vtx
         }
 
         // Subtraction from current operator
-        constexpr vector<T, N> operator-=( const vector<T, N> &v ) noexcept {
+        constexpr vector operator-=( const vector &v ) noexcept {
             for (size_t i = 0; i < N; ++i) {
                 elements[i] -= v.elements[i];
             }
@@ -136,8 +136,8 @@ namespace vtx
         }
 
         // Multiplication operator
-        constexpr vector<T, N> operator*( const vector<T, N> &v ) const noexcept {
-            vector<T, N> result;
+        constexpr vector operator*( const vector &v ) const noexcept {
+            vector result;
             for (size_t i = 0; i < N; ++i) {
                 result.elements[i] = elements[i] * v.elements[i];
             }
@@ -146,7 +146,7 @@ namespace vtx
         }
 
         // Multiplication with current operator
-        constexpr vector<T, N> operator*=( const vector<T, N> &v ) noexcept {
+        constexpr vector operator*=( const vector &v ) noexcept {
             for (size_t i = 0; i < N; ++i) {
                 elements[i] *= v.elements[i];
             }
@@ -155,8 +155,8 @@ namespace vtx
         }
 
         // Multiplication operator
-        constexpr vector<T, N> operator*( const T n ) const noexcept {
-            vector<T, N> result;
+        constexpr vector operator*( const T n ) const noexcept {
+            vector result;
             for (size_t i = 0; i < N; ++i) {
                 result.elements[i] = elements[i] * n;
             }
@@ -165,7 +165,7 @@ namespace vtx
         }
 
         // Multiplication with current operator
-        constexpr vector<T, N> operator*=( const T n ) noexcept {
+        constexpr vector operator*=( const T n ) noexcept {
             for (size_t i = 0; i < N; ++i) {
                 elements[i] *= n;
             }
@@ -174,8 +174,8 @@ namespace vtx
         }
 
         // Division operator
-        constexpr vector<T, N> operator/( const vector<T, N> &v ) const noexcept {
-            vector<T, N> result;
+        constexpr vector operator/( const vector &v ) const noexcept {
+            vector result;
             for (size_t i = 0; i < N; ++i) {
                 result.elements[i] = elements[i] / v.elements[i];
             }
@@ -184,7 +184,7 @@ namespace vtx
         }
 
         // Division from current operator
-        constexpr vector<T, N> operator/=( const vector<T, N> &v ) noexcept {
+        constexpr vector operator/=( const vector &v ) noexcept {
             for (size_t i = 0; i < N; ++i) {
                 elements[i] /= v.elements[i];
             }
@@ -193,8 +193,8 @@ namespace vtx
         }
 
         // Division operator
-        constexpr vector<T, N> operator/( const T n ) const noexcept {
-            vector<T, N> result;
+        constexpr vector operator/( const T n ) const noexcept {
+            vector result;
             for (size_t i = 0; i < N; ++i) {
                 result.elements[i] = elements[i] / n;
             }
@@ -203,7 +203,7 @@ namespace vtx
         }
 
         // Division from current operator
-        constexpr vector<T, N> operator/=( const T n ) noexcept {
+        constexpr vector operator/=( const T n ) noexcept {
             for (size_t i = 0; i < N; ++i) {
                 elements[i] /= n;
             }
@@ -212,7 +212,7 @@ namespace vtx
         }
 
         // Dot product operator
-        constexpr T operator&( const vector<T, N> &v ) const noexcept {
+        constexpr T operator&( const vector &v ) const noexcept {
             T sum = T(0);
             for (size_t i = 0; i < N; ++i) {
                 sum += elements[i] * v.elements[i];
@@ -237,12 +237,12 @@ namespace vtx
         }
 
         // Normalized vector
-        constexpr vector<T, N> normalized( ) const noexcept {
+        constexpr vector normalized( ) const noexcept {
             return *this / length();
         }
 
         // Normalize current vector
-        constexpr vector<T, N> & normalize( ) noexcept {
+        constexpr vector & normalize( ) noexcept {
             return *this /= length();
         }
 
@@ -267,18 +267,18 @@ namespace vtx
         }
 
         // Two vectors linear interpolation
-        constexpr vector<T, N> lerp( const vector<T, N> &v, const T coef ) const noexcept {
-            vector<T, N> res;
+        constexpr vector lerp( const vector &v, const T t ) const noexcept {
+            vector res;
             for (size_t i = 0; i < N; ++i) {
-                res.elements[i] = elements[i] + coef * (v.elements[i] - elements[i]);
+                res.elements[i] = elements[i] + t * (v.elements[i] - elements[i]);
             }
 
             return res;
         }
 
         // Maximal components vector
-        constexpr vector<T, N> maxV( const vector<T, N> &v ) const noexcept {
-            vector<T, N> res;
+        constexpr vector maxV( const vector &v ) const noexcept {
+            vector res;
             for (size_t i = 0; i < N; ++i) {
                 res.elements[i] = math::max(elements[i], v.elements[i]);
             }
@@ -287,8 +287,8 @@ namespace vtx
         }
 
         // Minimal components vector
-        constexpr vector<T, N> minV( const vector<T, N> &v ) const noexcept {
-            vector<T, N> res;
+        constexpr vector minV( const vector &v ) const noexcept {
+            vector res;
             for (size_t i = 0; i < N; ++i) {
                 res.elements[i] = math::min(elements[i], v.elements[i]);
             }
@@ -297,8 +297,8 @@ namespace vtx
         }
 
         // Ceil vector components
-        constexpr vector<T, N> ceil( ) const noexcept {
-            vector<T, N> res;
+        constexpr vector ceil( ) const noexcept {
+            vector res;
             for (size_t i = 0; i < N; ++i) {
                 res.elements[i] = math::ceil(elements[i]);
             }
@@ -307,8 +307,8 @@ namespace vtx
         }
 
         // Floor vector components
-        constexpr vector<T, N> floor( ) const noexcept {
-            vector<T, N> res;
+        constexpr vector floor( ) const noexcept {
+            vector res;
             for (size_t i = 0; i < N; ++i) {
                 res.elements[i] = math::floor(elements[i]);
             }
@@ -329,8 +329,8 @@ namespace vtx
         // TODO: Replace rand() with <random> and std::uniform_real_distribution
 
         // Get random components vector
-        static vector<T, N> rand( ) noexcept {
-            vector<T, N> res;
+        static vector rand( ) noexcept {
+            vector res;
             for (size_t i = 0; i < N; ++i) {
                 res.elements[i] = static_cast<T>(std::rand());
             }
@@ -339,8 +339,8 @@ namespace vtx
         }
 
         // Get random components [0;1] vector
-        static vector<T, N> rand0( ) noexcept {
-            vector<T, N> res;
+        static vector rand0( ) noexcept {
+            vector res;
             for (size_t i = 0; i < N; ++i) {
                 res.elements[i] = static_cast<T>((double)std::rand() / RAND_MAX);
             }
@@ -349,8 +349,8 @@ namespace vtx
         }
 
         // Get random components [-1;1] vector
-        static vector<T, N> rand1( ) noexcept {
-            vector<T, N> res;
+        static vector rand1( ) noexcept {
+            vector res;
             for (size_t i = 0; i < N; ++i) {
                 res.elements[i] = static_cast<T>((double)std::rand() / RAND_MAX * 2 - 1);
             }

@@ -6,8 +6,7 @@
 #define VECTRIX_COMMON_H
 
 #include <cmath>
-#include <algorithm> // std::min, std::max
-#include <limits>    // std::numeric_limits
+#include <algorithm> // for std::clamp
 
 namespace vtx {
     namespace math {

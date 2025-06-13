@@ -28,7 +28,7 @@ namespace vtx::math {
 
     template <typename T>
     constexpr T clamp(T val, T minVal, T maxVal) {
-        return (val < minVal) ? minVal : (val > maxVal ? maxVal : val);
+        return max(min(val, maxVal), minVal);
     }
 
     template <typename T>
@@ -40,7 +40,7 @@ namespace vtx::math {
     template <typename T>
     constexpr T sqrt(T x) {
         if (x < 0)
-            return T(-1); // Invalid, could be changed to static_assert
+            return T(-1); // TODO: Invalid, could be changed to static_assert
         T guess = x / 2;
         for (int i = 0; i < 10; ++i)
             guess = (guess + x / guess) / 2;
