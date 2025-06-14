@@ -7,6 +7,7 @@
 
 #include <cmath>
 #include <algorithm> // for std::clamp
+#include <random>
 
 namespace vtx {
     namespace math {

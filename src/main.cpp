@@ -3,7 +3,7 @@
 //
 
 #include <iostream>
-#include <vectrix/core/base_vector.h>
+#include <vectrix/vectrix.h>
 
 int main() {
     vtx::vector<float, 3> a(1.0f);

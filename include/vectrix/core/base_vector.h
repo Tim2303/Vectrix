@@ -5,7 +5,7 @@
 #ifndef VECTRIX_BASE_VECTOR_H
 #define VECTRIX_BASE_VECTOR_H
 
-#include <vectrix/math/common.h>
+#include "vectrix/math/common.h"
 
 // vtx namespace
 namespace vtx
@@ -13,7 +13,6 @@ namespace vtx
     // Base vector class of any size
     template<typename T, size_t N>
     class vector {
-        using Float = std::conditional_t<std::is_floating_point_v<T>, T, float>;
     public:
         T elements[N];
 
@@ -250,7 +249,7 @@ namespace vtx
         constexpr T maxC( ) const noexcept {
             T mx = elements[0];
             for (size_t i = 1; i < N; ++i) {
-                mx = math::max(mx, elements[i]);
+                mx = vtx::math::max(mx, elements[i]);
             }
 
             return mx;
@@ -260,7 +259,7 @@ namespace vtx
         constexpr T minC( ) const noexcept {
             T mn = elements[0];
             for (size_t i = 1; i < N; ++i) {
-                mn = math::min(mn, elements[i]);
+                mn = vtx::math::min(mn, elements[i]);
             }
 
             return mn;
@@ -280,7 +279,7 @@ namespace vtx
         constexpr vector maxV( const vector &v ) const noexcept {
             vector res;
             for (size_t i = 0; i < N; ++i) {
-                res.elements[i] = math::max(elements[i], v.elements[i]);
+                res.elements[i] = vtx::math::max(elements[i], v.elements[i]);
             }
 
             return res;
@@ -290,7 +289,7 @@ namespace vtx
         constexpr vector minV( const vector &v ) const noexcept {
             vector res;
             for (size_t i = 0; i < N; ++i) {
-                res.elements[i] = math::min(elements[i], v.elements[i]);
+                res.elements[i] = vtx::math::min(elements[i], v.elements[i]);
             }
 
             return res;
@@ -300,7 +299,7 @@ namespace vtx
         constexpr vector ceil( ) const noexcept {
             vector res;
             for (size_t i = 0; i < N; ++i) {
-                res.elements[i] = math::ceil(elements[i]);
+                res.elements[i] = vtx::math::ceil(elements[i]);
             }
 
             return res;
@@ -310,7 +309,7 @@ namespace vtx
         constexpr vector floor( ) const noexcept {
             vector res;
             for (size_t i = 0; i < N; ++i) {
-                res.elements[i] = math::floor(elements[i]);
+                res.elements[i] = vtx::math::floor(elements[i]);
             }
 
             return res;
@@ -324,38 +323,6 @@ namespace vtx
             }
 
             return result;
-        }
-
-        // TODO: Replace rand() with <random> and std::uniform_real_distribution
-
-        // Get random components vector
-        static vector rand( ) noexcept {
-            vector res;
-            for (size_t i = 0; i < N; ++i) {
-                res.elements[i] = static_cast<T>(std::rand());
-            }
-
-            return res;
-        }
-
-        // Get random components [0;1] vector
-        static vector rand0( ) noexcept {
-            vector res;
-            for (size_t i = 0; i < N; ++i) {
-                res.elements[i] = static_cast<T>((double)std::rand() / RAND_MAX);
-            }
-
-            return res;
-        }
-
-        // Get random components [-1;1] vector
-        static vector rand1( ) noexcept {
-            vector res;
-            for (size_t i = 0; i < N; ++i) {
-                res.elements[i] = static_cast<T>((double)std::rand() / RAND_MAX * 2 - 1);
-            }
-
-            return res;
         }
 
     }; // class vector
