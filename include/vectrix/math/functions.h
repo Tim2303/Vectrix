@@ -40,11 +40,12 @@ namespace vtx {
         // Simple constexpr sqrt (Newton)
         template <typename T>
         constexpr T sqrt(T x) {
-            if (x < 0)
-                return T(-1); // TODO: Invalid, could be changed to static_assert
+            static_assert(x < 0);
+
             T guess = x / 2;
             for (int i = 0; i < 10; ++i)
                 guess = (guess + x / guess) / 2;
+
             return guess;
         }
 

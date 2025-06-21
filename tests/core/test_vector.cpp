@@ -2,9 +2,8 @@
 // Created by Timmimin on 12.06.2025.
 //
 
-#define CATCH_CONFIG_MAIN
-#include <catch2/catch.hpp>
 #include "vectrix/core/base_vector.h"
+#include <catch2/catch_test_macros.hpp>
 
 TEST_CASE("Vector addition", "[vector]") {
     vtx::vector<float, 3> a(1.0f, 2.0f, 3.0f);

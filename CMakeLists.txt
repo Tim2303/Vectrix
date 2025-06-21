@@ -23,8 +23,32 @@ endif()
 
 # Main library
 add_library(vectrix INTERFACE)
-target_include_directories(vectrix INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/include)
+target_include_directories(vectrix INTERFACE
+        ${CMAKE_CURRENT_SOURCE_DIR}/include
+        $<INSTALL_INTERFACE:include>
+)
 target_compile_definitions(vectrix INTERFACE $<$<BOOL:${VTX_USE_CPP20}>:VTX_CPP20>)
 
 add_executable(vectrix_build src/main.cpp)
 target_link_libraries(vectrix_build PRIVATE vectrix)
+
+# Add unit tests
+option(BUILD_TESTING "Build the tests" ON)
+
+if(BUILD_TESTING)
+    add_subdirectory(extern/Catch2)
+    enable_testing()
+
+    add_executable(tests
+            tests/core/test_vector.cpp
+    )
+
+    # Link to Catch2
+    target_link_libraries(tests PRIVATE vectrix Catch2::Catch2WithMain)
+    target_include_directories(tests PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
+
+    add_test(NAME vectrix_tests COMMAND tests)
+    #target_compile_definitions(tests PRIVATE
+    #        $<$<BOOL:${VTX_USE_CPP20}>:VTX_CPP20>
+    #) # TODO: Think about this definitions
+endif()
