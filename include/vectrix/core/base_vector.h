@@ -13,6 +13,18 @@ namespace vtx
     // Base vector class of any size
     template<typename T, size_t N>
     class vector {
+    private:
+
+        // Helper metafunction to check that all arguments are convertible to T
+        template<typename... Args>
+        struct all_convertible : std::true_type {};
+
+        template<typename First, typename... Rest>
+        struct all_convertible<First, Rest...> :
+                std::integral_constant<bool,
+                        std::is_convertible<First, T>::value &&
+                        all_convertible<Rest...>::value> {};
+
     public:
         T elements[N];
 
@@ -26,16 +38,20 @@ namespace vtx
             }
         }
 
-        // Multiple parameters constructor
-        template <typename... Args>
-        constexpr explicit vector( Args... args ) noexcept {
-            static_assert(sizeof...(Args) <= N, "Too many constructor arguments!");
-            static_assert((std::is_convertible_v<Args, T> && ...),
-                    "All arguments must be convertible to T!");
+        // Variadic constructor (C++11-compatible)
+        template<typename... Args>
+        explicit vector(Args... args) noexcept {
+            static_assert(sizeof...(Args) <= N,
+                    "Too many constructor arguments!");
+            static_assert(all_convertible<Args...>::value,
+                    "All arguments must be convertible to T");
 
-            size_t i = 0;
-            ((i < N ? (elements[i++] = args) : T(0)), ...);
-            while (i < N) elements[i++] = T(0);
+            T* dst = elements;
+            using expander = int[];
+            (void)expander{0, ((void)(*dst++ = static_cast<T>(args)), 0)...};
+
+            for (size_t i = sizeof...(Args); i < N; ++i)
+                elements[i] = T(0);
         }
 
         // Vectors equality operator
