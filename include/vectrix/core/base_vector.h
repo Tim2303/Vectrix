@@ -14,6 +14,8 @@ namespace vtx
     template<typename T, size_t N>
     class vector {
     private:
+        static_assert(N > 0,
+                "Vector dimension N must be greater than zero");
 
         // Helper metafunction to check that all arguments are convertible to T
         template<typename... Args>
@@ -40,7 +42,7 @@ namespace vtx
 
         // Variadic constructor (C++11-compatible)
         template<typename... Args>
-        explicit vector(Args... args) noexcept {
+        constexpr explicit vector(Args... args) noexcept {
             static_assert(sizeof...(Args) <= N,
                     "Too many constructor arguments!");
             static_assert(all_convertible<Args...>::value,
@@ -52,6 +54,17 @@ namespace vtx
 
             for (size_t i = sizeof...(Args); i < N; ++i)
                 elements[i] = T(0);
+        }
+
+        // Initializer list constructor
+        constexpr vector( std::initializer_list<T> list ) noexcept {
+            size_t i = 0;
+            for (T val : list) {
+                if (i < N)
+                    elements[i++] = val;
+            }
+            while (i < N)
+                elements[i++] = T(0);
         }
 
         // Vectors equality operator
@@ -94,11 +107,17 @@ namespace vtx
 
         // Component getter operator
         constexpr T operator[]( const size_t ind ) const {
+#ifdef _DEBUG
+            assert(ind < N);
+#endif // _DEBUG
             return elements[ind];
         }
 
         // Component reference getter operator
         constexpr T & operator[]( const size_t ind ) {
+#ifdef _DEBUG
+            assert(ind < N);
+#endif // _DEBUG
             return elements[ind];
         }
 
@@ -228,6 +247,11 @@ namespace vtx
 
         // Dot product operator
         constexpr T operator&( const vector &v ) const noexcept {
+            return dot(v);
+        }
+
+        // Dot product function
+        constexpr T dot( const vector& v ) const noexcept {
             T sum = T(0);
             for (size_t i = 0; i < N; ++i) {
                 sum += elements[i] * v.elements[i];
@@ -235,6 +259,7 @@ namespace vtx
 
             return sum;
         }
+
 
         // Vector length (sq)
         constexpr T squaredLength( ) const noexcept {
@@ -253,12 +278,20 @@ namespace vtx
 
         // Normalized vector
         constexpr vector normalized( ) const noexcept {
-            return *this / length();
+            T len = length();
+#ifdef _DEBUG
+            assert(len != T(0));
+#endif // _DEBUG
+            return *this / len;
         }
 
         // Normalize current vector
         constexpr vector & normalize( ) noexcept {
-            return *this /= length();
+            T len = length();
+#ifdef _DEBUG
+            assert(len != T(0));
+#endif // _DEBUG
+            return *this /= len;
         }
 
         // Maximal component
@@ -340,6 +373,18 @@ namespace vtx
 
             return result;
         }
+
+        constexpr T sum() const noexcept {
+            T s = T(0);
+            for (size_t i = 0; i < N; ++i)
+                s += elements[i];
+            return s;
+        }
+
+        constexpr double avg() const noexcept {
+            return sum() / (double)N;
+        }
+
 
     }; // class vector
 

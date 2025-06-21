@@ -5,6 +5,8 @@
 #ifndef VECTRIX_COMMON_H
 #define VECTRIX_COMMON_H
 
+#include <cassert>
+
 #include <cmath>
 #include <algorithm> // for std::clamp
 #include <random>
