@@ -114,7 +114,7 @@ namespace vtx
         }
 
         // Component reference getter operator
-        constexpr T & operator[]( const size_t ind ) {
+        constexpr T& operator[]( const size_t ind ) {
 #ifdef _DEBUG
             assert(ind < N);
 #endif // _DEBUG
@@ -142,7 +142,7 @@ namespace vtx
         }
 
         // Addition to current operator
-        constexpr vector operator+=( const vector &v ) noexcept {
+        constexpr vector& operator+=( const vector &v ) noexcept {
             for (size_t i = 0; i < N; ++i) {
                 elements[i] += v.elements[i];
             }
@@ -161,7 +161,7 @@ namespace vtx
         }
 
         // Subtraction from current operator
-        constexpr vector operator-=( const vector &v ) noexcept {
+        constexpr vector& operator-=( const vector &v ) noexcept {
             for (size_t i = 0; i < N; ++i) {
                 elements[i] -= v.elements[i];
             }
@@ -180,7 +180,7 @@ namespace vtx
         }
 
         // Multiplication with current operator
-        constexpr vector operator*=( const vector &v ) noexcept {
+        constexpr vector& operator*=( const vector &v ) noexcept {
             for (size_t i = 0; i < N; ++i) {
                 elements[i] *= v.elements[i];
             }
@@ -199,7 +199,7 @@ namespace vtx
         }
 
         // Multiplication with current operator
-        constexpr vector operator*=( const T n ) noexcept {
+        constexpr vector& operator*=( const T n ) noexcept {
             for (size_t i = 0; i < N; ++i) {
                 elements[i] *= n;
             }
@@ -218,7 +218,7 @@ namespace vtx
         }
 
         // Division from current operator
-        constexpr vector operator/=( const vector &v ) noexcept {
+        constexpr vector& operator/=( const vector &v ) noexcept {
             for (size_t i = 0; i < N; ++i) {
                 elements[i] /= v.elements[i];
             }
@@ -237,7 +237,7 @@ namespace vtx
         }
 
         // Division from current operator
-        constexpr vector operator/=( const T n ) noexcept {
+        constexpr vector& operator/=( const T n ) noexcept {
             for (size_t i = 0; i < N; ++i) {
                 elements[i] /= n;
             }
@@ -286,7 +286,7 @@ namespace vtx
         }
 
         // Normalize current vector
-        constexpr vector & normalize( ) noexcept {
+        constexpr vector& normalize( ) noexcept {
             T len = length();
 #ifdef _DEBUG
             assert(len != T(0));

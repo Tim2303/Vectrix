@@ -11,6 +11,12 @@
 #include <algorithm> // for std::clamp
 #include <random>
 
+#if __cpp_if_constexpr >= 201606
+#define VTX_CONSTEXPR_IF constexpr
+#else
+#define VTX_CONSTEXPR_IF
+#endif // __cpp_if_constexpr >= 201606
+
 namespace vtx {
     namespace math {
         // Constants definition

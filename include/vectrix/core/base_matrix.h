@@ -8,8 +8,6 @@
 #include "vectrix/math/common.h"
 #include "base_vector.h"
 
-// TODO: Vibecoded this file, needs and review
-
 // vtx namespace
 namespace vtx
 {
@@ -37,7 +35,7 @@ namespace vtx
         constexpr matrix() = default;
 
         // One parameter constructor (fill matrix with value)
-        constexpr explicit matrix(const T num) noexcept {
+        constexpr explicit matrix( const T num ) noexcept {
             for (size_t i = 0; i < M; ++i) {
                 for (size_t j = 0; j < N; ++j) {
                     elements[i][j] = num;
@@ -47,7 +45,7 @@ namespace vtx
 
         // Variadic constructor (row-major order)
         template<typename... Args>
-        constexpr explicit matrix(Args... args) noexcept {
+        constexpr explicit matrix( Args... args ) noexcept {
             static_assert(sizeof...(Args) <= M * N,
                     "Too many constructor arguments!");
             static_assert(all_convertible<Args...>::value,
@@ -64,7 +62,7 @@ namespace vtx
         }
 
         // Initializer list constructor (row-major order)
-        constexpr matrix(std::initializer_list<T> list) noexcept {
+        constexpr matrix( std::initializer_list<T> list ) noexcept {
             size_t k = 0;
             for (T val : list) {
                 if (k < M * N) {
@@ -79,11 +77,13 @@ namespace vtx
         }
 
         // Row initializer list constructor
-        constexpr matrix(std::initializer_list<std::initializer_list<T>> list) noexcept {
+        constexpr matrix( std::initializer_list<std::initializer_list<T>> list ) noexcept {
             size_t i = 0;
-            for (const auto& row : list) {
+
+            for (const auto &row : list) {
                 if (i < M) {
                     size_t j = 0;
+
                     for (T val : row) {
                         if (j < N) {
                             elements[i][j] = val;
@@ -97,6 +97,7 @@ namespace vtx
                     i++;
                 }
             }
+
             // Fill remaining rows with zero
             for (; i < M; ++i) {
                 for (size_t j = 0; j < N; ++j) {
@@ -106,7 +107,7 @@ namespace vtx
         }
 
         // Matrix equality operator
-        constexpr bool operator==(const matrix &m) const noexcept {
+        constexpr bool operator==( const matrix &m ) const noexcept {
             for (size_t i = 0; i < M; ++i) {
                 for (size_t j = 0; j < N; ++j) {
                     if (m.elements[i][j] != elements[i][j]) {
@@ -114,6 +115,7 @@ namespace vtx
                     }
                 }
             }
+
             return true;
         }
 
@@ -126,11 +128,12 @@ namespace vtx
                     }
                 }
             }
+
             return false;
         }
 
         // Row access operator
-        constexpr T* operator[](size_t row) noexcept {
+        constexpr T* operator[]( size_t row ) noexcept {
 #ifdef _DEBUG
             assert(row < M);
 #endif
@@ -138,7 +141,7 @@ namespace vtx
         }
 
         // Const row access operator
-        constexpr const T* operator[](size_t row) const noexcept {
+        constexpr const T* operator[]( size_t row ) const noexcept {
 #ifdef _DEBUG
             assert(row < M);
 #endif
@@ -146,7 +149,7 @@ namespace vtx
         }
 
         // Element access (row, column)
-        constexpr T& operator()(size_t row, size_t col) noexcept {
+        constexpr T& operator()( size_t row, size_t col ) noexcept {
 #ifdef _DEBUG
             assert(row < M && col < N);
 #endif
@@ -154,7 +157,7 @@ namespace vtx
         }
 
         // Const element access (row, column)
-        constexpr T operator()(size_t row, size_t col) const noexcept {
+        constexpr T operator()( size_t row, size_t col ) const noexcept {
 #ifdef _DEBUG
             assert(row < M && col < N);
 #endif
@@ -173,32 +176,35 @@ namespace vtx
                     result.elements[i][j] = -elements[i][j];
                 }
             }
+
             return result;
         }
 
         // Addition operator
-        constexpr matrix operator+(const matrix &m) const noexcept {
+        constexpr matrix operator+( const matrix &m ) const noexcept {
             matrix result;
             for (size_t i = 0; i < M; ++i) {
                 for (size_t j = 0; j < N; ++j) {
                     result.elements[i][j] = elements[i][j] + m.elements[i][j];
                 }
             }
+
             return result;
         }
 
         // Addition to current operator
-        constexpr matrix& operator+=(const matrix &m) noexcept {
+        constexpr matrix& operator+=( const matrix &m ) noexcept {
             for (size_t i = 0; i < M; ++i) {
                 for (size_t j = 0; j < N; ++j) {
                     elements[i][j] += m.elements[i][j];
                 }
             }
+
             return *this;
         }
 
         // Subtraction operator
-        constexpr matrix operator-(const matrix &m) const noexcept {
+        constexpr matrix operator-( const matrix &m ) const noexcept {
             matrix result;
             for (size_t i = 0; i < M; ++i) {
                 for (size_t j = 0; j < N; ++j) {
@@ -209,61 +215,67 @@ namespace vtx
         }
 
         // Subtraction from current operator
-        constexpr matrix& operator-=(const matrix &m) noexcept {
+        constexpr matrix& operator-=( const matrix &m ) noexcept {
             for (size_t i = 0; i < M; ++i) {
                 for (size_t j = 0; j < N; ++j) {
                     elements[i][j] -= m.elements[i][j];
                 }
             }
+
             return *this;
         }
 
         // Scalar multiplication operator
-        constexpr matrix operator*(const T scalar) const noexcept {
+        constexpr matrix operator*( const T scalar ) const noexcept {
             matrix result;
             for (size_t i = 0; i < M; ++i) {
                 for (size_t j = 0; j < N; ++j) {
                     result.elements[i][j] = elements[i][j] * scalar;
                 }
             }
+
             return result;
         }
 
         // Scalar multiplication with current operator
-        constexpr matrix& operator*=(const T scalar) noexcept {
+        constexpr matrix& operator*=( const T scalar ) noexcept {
             for (size_t i = 0; i < M; ++i) {
                 for (size_t j = 0; j < N; ++j) {
                     elements[i][j] *= scalar;
                 }
             }
+
             return *this;
         }
 
         // Scalar division operator
-        constexpr matrix operator/(const T scalar) const noexcept {
+        constexpr matrix operator/( const T scalar ) const noexcept {
             matrix result;
             for (size_t i = 0; i < M; ++i) {
                 for (size_t j = 0; j < N; ++j) {
                     result.elements[i][j] = elements[i][j] / scalar;
                 }
             }
+
             return result;
         }
 
         // Scalar division with current operator
-        constexpr matrix& operator/=(const T scalar) noexcept {
+        constexpr matrix& operator/=( const T scalar ) noexcept {
             for (size_t i = 0; i < M; ++i) {
                 for (size_t j = 0; j < N; ++j) {
                     elements[i][j] /= scalar;
                 }
             }
+
             return *this;
         }
 
         // Matrix multiplication (for compatible matrices)
         template<size_t P>
-        constexpr matrix<T, M, P> operator*(const matrix<T, N, P> &m) const noexcept {
+        constexpr matrix<T, M, P> operator*( const matrix<T, N, P> &m ) const noexcept {
             matrix<T, M, P> result;
+
             for (size_t i = 0; i < M; ++i) {
                 for (size_t j = 0; j < P; ++j) {
                     T sum = T(0);
@@ -273,11 +285,12 @@ namespace vtx
                     result.elements[i][j] = sum;
                 }
             }
+
             return result;
         }
 
         // Matrix multiplication with current (only for square matrices)
-        constexpr matrix& operator*=(const matrix &m) noexcept {
+        constexpr matrix& operator*=( const matrix &m ) noexcept {
             static_assert(M == N, "Matrix must be square for *= operator");
             *this = *this * m;
             return *this;
@@ -286,11 +299,13 @@ namespace vtx
         // Transpose matrix
         constexpr matrix<T, N, M> transpose() const noexcept {
             matrix<T, N, M> result;
+
             for (size_t i = 0; i < M; ++i) {
                 for (size_t j = 0; j < N; ++j) {
                     result.elements[j][i] = elements[i][j];
                 }
             }
+
             return result;
         }
 
@@ -298,11 +313,13 @@ namespace vtx
         static constexpr matrix identity() noexcept {
             static_assert(M == N, "Identity matrix must be square");
             matrix result;
+
             for (size_t i = 0; i < M; ++i) {
                 for (size_t j = 0; j < N; ++j) {
                     result.elements[i][j] = (i == j) ? T(1) : T(0);
                 }
             }
+
             return result;
         }
 
@@ -310,33 +327,16 @@ namespace vtx
         constexpr T determinant() const noexcept {
             static_assert(M == N, "Determinant is only defined for square matrices");
 
-            if constexpr (M == 1) {
+            if VTX_CONSTEXPR_IF (M == 1) {
                 return elements[0][0];
             }
-            else if constexpr (M == 2) {
+            else if VTX_CONSTEXPR_IF (M == 2) {
                 return elements[0][0] * elements[1][1] - elements[0][1] * elements[1][0];
             }
-            else if constexpr (M == 3) {
+            else if VTX_CONSTEXPR_IF (M == 3) {
                 return elements[0][0] * (elements[1][1] * elements[2][2] - elements[1][2] * elements[2][1]) -
                        elements[0][1] * (elements[1][0] * elements[2][2] - elements[1][2] * elements[2][0]) +
                        elements[0][2] * (elements[1][0] * elements[2][1] - elements[1][1] * elements[2][0]);
-            }
-            else if constexpr (M == 4) {
-                // 4x4 determinant using Laplace expansion
-                T det = T(0);
-                for (size_t i = 0; i < 4; ++i) {
-                    matrix<T, 3, 3> minor;
-                    for (size_t j = 1; j < 4; ++j) {
-                        size_t col = 0;
-                        for (size_t k = 0; k < 4; ++k) {
-                            if (k == i) continue;
-                            minor[j-1][col] = elements[j][k];
-                            ++col;
-                        }
-                    }
-                    det += (i % 2 == 0 ? 1 : -1) * elements[0][i] * minor.determinant();
-                }
-                return det;
             }
             else {
                 // General case for NxN matrices (using Laplace expansion)
@@ -362,10 +362,10 @@ namespace vtx
         constexpr matrix inverse() const noexcept {
             static_assert(M == N, "Inverse is only defined for square matrices");
 
-            if constexpr (M == 1) {
+            if VTX_CONSTEXPR_IF (M == 1) {
                 return matrix(1 / elements[0][0]);
             }
-            else if constexpr (M == 2) {
+            else if VTX_CONSTEXPR_IF (M == 2) {
                 T det = determinant();
                 if (det == T(0)) return identity();
 
@@ -374,7 +374,7 @@ namespace vtx
                         -elements[1][0] / det, elements[0][0] / det
                 );
             }
-            else if constexpr (M == 3) {
+            else if VTX_CONSTEXPR_IF (M == 3) {
                 T det = determinant();
                 if (det == T(0)) return identity();
 
@@ -435,26 +435,31 @@ namespace vtx
         constexpr T trace() const noexcept {
             static_assert(M == N, "Trace is only defined for square matrices");
             T sum = T(0);
+
             for (size_t i = 0; i < M; ++i) {
                 sum += elements[i][i];
             }
+
             return sum;
         }
 
         // Frobenius norm (square root of sum of squares of all elements)
         constexpr T frobeniusNorm() const noexcept {
             T sum = T(0);
+
             for (size_t i = 0; i < M; ++i) {
                 for (size_t j = 0; j < N; ++j) {
                     sum += elements[i][j] * elements[i][j];
                 }
             }
+
             return sqrt(sum);
         }
 
         // Matrix-vector multiplication (for MxN matrix and Nx1 vector)
-        constexpr vector<T, M> operator*(const vector<T, N> &v) const noexcept {
+        constexpr vector<T, M> operator*( const vector<T, N> &v ) const noexcept {
             vector<T, M> result;
+
             for (size_t i = 0; i < M; ++i) {
                 T sum = T(0);
                 for (size_t j = 0; j < N; ++j) {
@@ -462,125 +467,8 @@ namespace vtx
                 }
                 result[i] = sum;
             }
+
             return result;
-        }
-
-        // Special matrix constructors (static factory methods)
-
-        // Translation matrix (for 4x4 matrices)
-        template<size_t D = M, typename = typename std::enable_if<D == 4 && N == 4>::type>
-        static constexpr matrix translation(const vector<T, 3> &trans) noexcept {
-            return matrix(
-                    1, 0, 0, trans[0],
-                    0, 1, 0, trans[1],
-                    0, 0, 1, trans[2],
-                    0, 0, 0, 1
-            );
-        }
-
-        // Scaling matrix (for 4x4 matrices)
-        template<size_t D = M, typename = typename std::enable_if<D == 4 && N == 4>::type>
-        static constexpr matrix scaling(const vector<T, 3> &scale) noexcept {
-            return matrix(
-                    scale[0], 0, 0, 0,
-                    0, scale[1], 0, 0,
-                    0, 0, scale[2], 0,
-                    0, 0, 0, 1
-            );
-        }
-
-        // Uniform scaling matrix (for 4x4 matrices)
-        template<size_t D = M, typename = typename std::enable_if<D == 4 && N == 4>::type>
-        static constexpr matrix scaling(T scale) noexcept {
-            return matrix(
-                    scale, 0, 0, 0,
-                    0, scale, 0, 0,
-                    0, 0, scale, 0,
-                    0, 0, 0, 1
-            );
-        }
-
-        // Rotation around X axis (for 4x4 matrices)
-        template<size_t D = M, typename = typename std::enable_if<D == 4 && N == 4>::type>
-        static constexpr matrix rotationX(T angle) noexcept {
-            T c = cos(angle);
-            T s = sin(angle);
-            return matrix(
-                    1, 0, 0, 0,
-                    0, c, -s, 0,
-                    0, s, c, 0,
-                    0, 0, 0, 1
-            );
-        }
-
-        // Rotation around Y axis (for 4x4 matrices)
-        template<size_t D = M, typename = typename std::enable_if<D == 4 && N == 4>::type>
-        static constexpr matrix rotationY(T angle) noexcept {
-            T c = cos(angle);
-            T s = sin(angle);
-            return matrix(
-                    c, 0, s, 0,
-                    0, 1, 0, 0,
-                    -s, 0, c, 0,
-                    0, 0, 0, 1
-            );
-        }
-
-        // Rotation around Z axis (for 4x4 matrices)
-        template<size_t D = M, typename = typename std::enable_if<D == 4 && N == 4>::type>
-        static constexpr matrix rotationZ(T angle) noexcept {
-            T c = cos(angle);
-            T s = sin(angle);
-            return matrix(
-                    c, -s, 0, 0,
-                    s, c, 0, 0,
-                    0, 0, 1, 0,
-                    0, 0, 0, 1
-            );
-        }
-
-        // View matrix (for 4x4 matrices)
-        template<size_t D = M, typename = typename std::enable_if<D == 4 && N == 4>::type>
-        static constexpr matrix view(const vector<T, 3> &eye, const vector<T, 3> &target, const vector<T, 3> &up) noexcept {
-            vector<T, 3> z = (eye - target).normalized();
-            vector<T, 3> x = (up % z).normalized();
-            vector<T, 3> y = z % x;
-
-            return matrix(
-                    x[0], x[1], x[2], -x.dot(eye),
-                    y[0], y[1], y[2], -y.dot(eye),
-                    z[0], z[1], z[2], -z.dot(eye),
-                    0, 0, 0, 1
-            );
-        }
-
-        // Perspective projection matrix (for 4x4 matrices)
-        template<size_t D = M, typename = typename std::enable_if<D == 4 && N == 4>::type>
-        static constexpr matrix perspective(T fovY, T aspect, T near, T far) noexcept {
-            T f = 1.0 / tan(fovY / 2.0);
-            T nf = 1.0 / (near - far);
-
-            return matrix(
-                    f / aspect, 0, 0, 0,
-                    0, f, 0, 0,
-                    0, 0, (far + near) * nf, 2 * far * near * nf,
-                    0, 0, -1, 0
-            );
-        }
-
-        // Orthographic projection matrix (for 4x4 matrices)
-        template<size_t D = M, typename = typename std::enable_if<D == 4 && N == 4>::type>
-        static constexpr matrix orthographic(T left, T right, T bottom, T top, T near, T far) noexcept {
-            T rl = 1.0 / (right - left);
-            T tb = 1.0 / (top - bottom);
-            T fn = 1.0 / (far - near);
-
-            return matrix(
-                    2 * rl, 0, 0, -(right + left) * rl,
-                    0, 2 * tb, 0, -(top + bottom) * tb,
-                    0, 0, -2 * fn, -(far + near) * fn,
-                    0, 0, 0, 1
-            );
         }
 
     }; // class matrix
