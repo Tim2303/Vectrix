@@ -17,6 +17,14 @@
 #define VTX_CONSTEXPR_IF
 #endif // __cpp_if_constexpr >= 201606
 
+#if defined(__GNUC__) || defined(__clang__)
+#define VTX_LIKELY(x) __builtin_expect(!!(x), 1)
+#define VTX_UNLIKELY(x) __builtin_expect(!!(x), 0)
+#else
+#define VTX_LIKELY(x) (x)
+#define VTX_UNLIKELY(x) (x)
+#endif
+
 namespace vtx {
     namespace math {
         // Constants definition
@@ -26,6 +34,7 @@ namespace vtx {
 
         using std::abs;
         using std::sqrt;
+        using std::cbrt;
         using std::pow;
         using std::sin;
         using std::cos;
