@@ -5,8 +5,7 @@
 #ifndef VECTRIX_RANDOM_H
 #define VECTRIX_RANDOM_H
 
-#include "vectrix/core/base_vector.h"
-#include "vectrix/core/base_matrix.h"
+#include "vectrix/core/vectrix_core.h"
 
 namespace vtx {
     namespace random {

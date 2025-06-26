@@ -385,6 +385,9 @@ namespace vtx
             return sum() / (double)N;
         }
 
+        constexpr size_t size() const noexcept {
+            return N;
+        }
 
     }; // class vector
 

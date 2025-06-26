@@ -39,15 +39,16 @@ if(BUILD_TESTING)
     add_subdirectory(extern/Catch2)
     enable_testing()
 
-    add_executable(tests
+    add_executable(VTXtests
             tests/core/test_vector.cpp
+            tests/core/test_matrix.cpp
     )
 
     # Link to Catch2
-    target_link_libraries(tests PRIVATE vectrix Catch2::Catch2WithMain)
-    target_include_directories(tests PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
+    target_link_libraries(VTXtests PRIVATE vectrix Catch2::Catch2WithMain)
+    target_include_directories(VTXtests PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
-    add_test(NAME vectrix_tests COMMAND tests)
+    add_test(NAME vectrix_tests COMMAND VTXtests)
     #target_compile_definitions(tests PRIVATE
     #        $<$<BOOL:${VTX_USE_CPP20}>:VTX_CPP20>
     #) # TODO: Think about this definitions
