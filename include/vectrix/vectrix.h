@@ -8,4 +8,6 @@
 #include "vectrix/math/functions.h"
 #include "vectrix/math/random.h"
 
+#include "vectrix/math/solvers.h"
+
 #endif //VECTRIX_VECTRIX_H
