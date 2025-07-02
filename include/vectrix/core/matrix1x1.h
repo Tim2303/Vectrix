@@ -176,6 +176,10 @@ namespace vtx
 
     }; // class matrix
 
+    // Set other names for matrix 1x1
+    template<typename T>
+    using mat1x1 = matrix<T, 1, 1>;
+
 } // namespace vtx
 
 #endif //VECTRIX_MATRIX1X1_H
