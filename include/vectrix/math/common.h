@@ -11,6 +11,8 @@
 #include <algorithm> // for std::clamp
 #include <random>
 
+#include "typedef.h"
+
 #if __cpp_if_constexpr >= 201606
 #define VTX_CONSTEXPR_IF constexpr
 #else

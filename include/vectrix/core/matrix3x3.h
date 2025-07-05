@@ -32,9 +32,9 @@ namespace vtx
 
         // One parameter constructor (fill matrix with value)
         constexpr explicit matrix( const T num ) noexcept {
-            for (size_t i = 0; i < 3; ++i) {
+            for (auto & element : elements) {
                 for (size_t j = 0; j < 3; ++j) {
-                    elements[i][j] = num;
+                    element[j] = num;
                 }
             }
         }
@@ -52,10 +52,12 @@ namespace vtx
             (void)expander{0, ((void)(*dst++ = static_cast<T>(args)), 0)...};
 
             // Fill remaining elements with zero
+#ifdef VTX_DEFAULT_FILL0
             dst = &elements[0][0];
             for (size_t i = sizeof...(Args); i < 3 * 3; ++i) {
                 dst[i] = T(0);
             }
+#endif // VTX_DEFAULT_FILL0
         }
 
         // Initializer list constructor (row-major order)
@@ -67,10 +69,13 @@ namespace vtx
                     k++;
                 }
             }
+
             // Fill remaining elements with zero
+#ifdef VTX_DEFAULT_FILL0
             for (; k < 3 * 3; ++k) {
                 elements[k / 3][k % 3] = T(0);
             }
+#endif // VTX_DEFAULT_FILL0
         }
 
         // Row initializer list constructor
@@ -96,11 +101,13 @@ namespace vtx
             }
 
             // Fill remaining rows with zero
+#ifdef VTX_DEFAULT_FILL0
             for (; i < 3; ++i) {
                 for (size_t j = 0; j < 3; ++j) {
                     elements[i][j] = T(0);
                 }
             }
+#endif // VTX_DEFAULT_FILL0
         }
 
         // Matrix equality operator

@@ -14,5 +14,8 @@
 
 // Vector classes
 #include "base_vector.h"
+#include "vector2.h"
+#include "vector3.h"
+#include "vector4.h"
 
 #endif //VECTRIX_VECTRIX_CORE_H

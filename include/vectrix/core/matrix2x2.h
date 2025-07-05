@@ -52,10 +52,12 @@ namespace vtx
             (void)expander{0, ((void)(*dst++ = static_cast<T>(args)), 0)...};
 
             // Fill remaining elements with zero
+#ifdef VTX_DEFAULT_FILL0
             dst = &elements[0][0];
             for (size_t i = sizeof...(Args); i < 2 * 2; ++i) {
                 dst[i] = T(0);
             }
+#endif // VTX_DEFAULT_FILL0
         }
 
         // Initializer list constructor (row-major order)
@@ -67,10 +69,13 @@ namespace vtx
                     k++;
                 }
             }
+
             // Fill remaining elements with zero
+#ifdef VTX_DEFAULT_FILL0
             for (; k < 2 * 2; ++k) {
                 elements[k / 2][k % 2] = T(0);
             }
+#endif // VTX_DEFAULT_FILL0
         }
 
         // Row initializer list constructor
@@ -96,11 +101,13 @@ namespace vtx
             }
 
             // Fill remaining rows with zero
+#ifdef VTX_DEFAULT_FILL0
             for (; i < 2; ++i) {
                 for (size_t j = 0; j < 2; ++j) {
                     elements[i][j] = T(0);
                 }
             }
+#endif // VTX_DEFAULT_FILL0
         }
 
         // Matrix equality operator
