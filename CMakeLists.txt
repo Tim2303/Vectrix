@@ -38,11 +38,12 @@ option(BUILD_TESTING "Build the tests" ON)
 if(BUILD_TESTING)
     add_subdirectory(extern/Catch2)
     enable_testing()
+    add_compile_definitions(VTX_DEFAULT_FILL0)
 
-    add_executable(VTXTests
-            tests/core/test_vector.cpp
-            tests/core/test_matrix.cpp
+    file(GLOB_RECURSE TEST_SOURCES
+            ${CMAKE_CURRENT_SOURCE_DIR}/tests/*.cpp
     )
+    add_executable(VTXTests ${TEST_SOURCES})
 
     # Link to Catch2
     target_link_libraries(VTXTests PRIVATE vectrix Catch2::Catch2WithMain)

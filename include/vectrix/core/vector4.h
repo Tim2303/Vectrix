@@ -283,12 +283,12 @@ namespace vtx
 
         // Maximal component
         constexpr T maxC( ) const noexcept {
-            return vtx::math::max(X, Y, Z, W);
+            return vtx::math::max({X, Y, Z, W});
         }
 
         // Minimal component
         constexpr T minC( ) const noexcept {
-            return vtx::math::min(X, Y, Z, W);
+            return vtx::math::min({X, Y, Z, W});
         }
 
         // Two vectors linear interpolation

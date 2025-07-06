@@ -57,16 +57,6 @@ namespace vtx {
             return std::abs(x);
         }
 
-        template<typename T>
-        inline T min( T a, T b ) {
-            return std::min(a, b);
-        }
-
-        template<typename T>
-        inline T max( T a, T b ) {
-            return std::max(a, b);
-        }
-
         template <typename T>
         inline T clamp(T val, T minVal, T maxVal) {
             return max(min(val, maxVal), minVal);

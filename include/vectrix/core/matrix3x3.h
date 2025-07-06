@@ -169,8 +169,8 @@ namespace vtx
         }
 
         // Pointer to data
-        constexpr T* data() noexcept { return &elements[0][0]; }
-        constexpr const T* data() const noexcept { return &elements[0][0]; }
+        constexpr T* data() noexcept { return elements[0]; }
+        constexpr const T* data() const noexcept { return elements[0]; }
 
         // Negation operator
         constexpr matrix operator-() const noexcept {

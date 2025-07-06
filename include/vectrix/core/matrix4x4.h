@@ -6,6 +6,7 @@
 #define VECTRIX_MATRIX4X4_H
 
 #include "base_matrix.h"
+#include "vector3.h"
 
 // vtx namespace
 namespace vtx
@@ -176,8 +177,8 @@ namespace vtx
         }
 
         // Pointer to data
-        constexpr T* data() noexcept { return elements; }
-        constexpr const T* data() const noexcept { return elements; }
+        constexpr T* data() noexcept { return elements[0]; }
+        constexpr const T* data() const noexcept { return elements[0]; }
 
         // Negation operator
         constexpr matrix operator-() const noexcept {
@@ -455,7 +456,7 @@ namespace vtx
 
         // Rotate matrix around X-axis
         constexpr static matrix rotateX( const T angleInDegree ) noexcept {
-            const auto co = vtx::math::cos(vtx::math::D2R * angleInDegree), si = vtx::math::sin(vtx::math::D2R * angleInDegree);
+            const T co = vtx::math::cos(vtx::math::D2R * angleInDegree), si = vtx::math::sin(vtx::math::D2R * angleInDegree);
             return matrix{
                 1, 0, 0, 0,
                 0, co, si, 0,
@@ -466,7 +467,7 @@ namespace vtx
 
         // Rotate matrix around Y-axis
         constexpr static matrix rotateY( const T angleInDegree ) noexcept {
-            const auto co = vtx::math::cos(vtx::math::D2R * angleInDegree), si = vtx::math::sin(vtx::math::D2R * angleInDegree);
+            const T co = vtx::math::cos(vtx::math::D2R * angleInDegree), si = vtx::math::sin(vtx::math::D2R * angleInDegree);
             return matrix{
                 co, 0, -si, 0,
                 0, 1, 0, 0,
@@ -477,7 +478,7 @@ namespace vtx
 
         // Rotate matrix around Z-axis
         constexpr static matrix rotateZ( const T angleInDegree ) noexcept {
-            const auto co = vtx::math::cos(vtx::math::D2R * angleInDegree), si = vtx::math::sin(vtx::math::D2R * angleInDegree);
+            const T co = vtx::math::cos(vtx::math::D2R * angleInDegree), si = vtx::math::sin(vtx::math::D2R * angleInDegree);
             return matrix{
                 co, si, 0, 0,
                 -si, co, 0, 0,
@@ -488,7 +489,7 @@ namespace vtx
 
         // Rotate matrix around given axis
         constexpr static matrix rotate( const vector<T, 3>& v, const T angleInDegree ) noexcept {
-            const auto co = vtx::math::cos(vtx::math::D2R * angleInDegree), si = vtx::math::sin(vtx::math::D2R * angleInDegree);
+            const T co = vtx::math::cos(vtx::math::D2R * angleInDegree), si = vtx::math::sin(vtx::math::D2R * angleInDegree);
             return matrix{
                 // 1
                 co + v[0] * v[0] * (1 - co),
@@ -584,7 +585,7 @@ namespace vtx
 
         // View matrix
         constexpr static matrix view( const vector<T, 3>& loc, const vector<T, 3>& at, const vector<T, 3>& up ) noexcept {
-            const vector<T, 3> Dir = (at - loc).normalize(), Right = (Dir % up).normalize(), Up1 = Right % Dir;
+            const vector<T, 3> Dir = (at - loc).normalize(), Right = (Dir.cross(up)).normalize(), Up1 = Right % Dir;
             return matrix{
                     Right[0], Up1[0], -Dir[0], 0,
                     Right[1], Up1[1], -Dir[1], 0,
