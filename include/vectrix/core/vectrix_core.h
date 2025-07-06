@@ -18,4 +18,7 @@
 #include "vector3.h"
 #include "vector4.h"
 
+// Quat
+#include "quaternion.h"
+
 #endif //VECTRIX_VECTRIX_CORE_H

@@ -378,6 +378,10 @@ namespace vtx
 
     }; // class vector
 
+    // Set other names for vector 4
+    template<typename T>
+    using vec4 = vector<T, 4>;
+
 } // namespace vtx
 
 #endif //VECTRIX_VECTOR4_H
