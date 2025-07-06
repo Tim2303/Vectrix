@@ -243,9 +243,9 @@ namespace vtx
 
         // Scalar multiplication with current operator
         constexpr matrix& operator*=( const T scalar ) noexcept {
-            for (size_t i = 0; i < 3; ++i) {
+            for (auto & element : elements) {
                 for (size_t j = 0; j < 3; ++j) {
-                    elements[i][j] *= scalar;
+                    element[j] *= scalar;
                 }
             }
 
@@ -266,9 +266,9 @@ namespace vtx
 
         // Scalar division with current operator
         constexpr matrix& operator/=( const T scalar ) noexcept {
-            for (size_t i = 0; i < 3; ++i) {
+            for (auto & element : elements) {
                 for (size_t j = 0; j < 3; ++j) {
-                    elements[i][j] /= scalar;
+                    element[j] /= scalar;
                 }
             }
 
@@ -362,9 +362,9 @@ namespace vtx
         constexpr T frobeniusNorm() const noexcept {
             T sum = T(0);
 
-            for (size_t i = 0; i < 3; ++i) {
+            for (auto & element : elements) {
                 for (size_t j = 0; j < 3; ++j) {
-                    sum += elements[i][j] * elements[i][j];
+                    sum += element[j] * element[j];
                 }
             }
 

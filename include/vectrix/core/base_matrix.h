@@ -29,6 +29,12 @@ namespace vtx
                         std::is_convertible<First, T>::value &&
                         all_convertible<Rest...>::value> {};
 
+    private:
+        template<size_t... Is>
+        constexpr std::array<T, M * N> to_array_impl(std::index_sequence<Is...>) const noexcept {
+            return { (data()[Is])... };
+        }
+
     public:
         T elements[M][N];
 
@@ -42,6 +48,11 @@ namespace vtx
                     elements[i][j] = num;
                 }
             }
+        }
+
+        // Get all elements in array class
+        constexpr std::array<T, M * N> array() const noexcept {
+            return to_array_impl(std::make_index_sequence<M * N>{});
         }
 
         // Variadic constructor (row-major order)
@@ -171,6 +182,19 @@ namespace vtx
             assert(row < M && col < N);
 #endif
             return elements[row][col];
+        }
+
+        // Get inner block from matrix
+        // <a, b> - block sizes
+        // (size_t a1, size_t b1) - left block angle indices
+        template<size_t a, size_t b>
+        constexpr matrix<T, a, b> block( size_t a1, size_t b1 ) const noexcept {
+            matrix<T, a, b> m;
+            for (size_t i = 0; i < a; ++i)
+                for (size_t j = 0; j < b; ++j)
+                    m[i][j] = elements[a1 + i][b1 + j];
+
+            return m;
         }
 
         // Pointer to data
