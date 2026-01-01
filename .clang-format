@@ -1,0 +1,26 @@
+BasedOnStyle: Google
+
+AccessModifierOffset: -4
+AlignAfterOpenBracket: DontAlign
+AlignOperands: DontAlign
+
+BinPackArguments: false
+BinPackParameters: false
+
+ColumnLimit: 100
+ContinuationIndentWidth: 4
+IndentWidth: 4
+TabWidth: 4
+UseTab: ForIndentation
+
+AlwaysBreakTemplateDeclarations: Yes
+BreakBeforeBraces: Custom
+BraceWrapping:
+  SplitEmptyRecord: true
+
+BreakConstructorInitializers: BeforeColon
+BreakInheritanceList: BeforeColon
+
+PointerAlignment: Right
+NamespaceIndentation: All
+CompactNamespaces: false
