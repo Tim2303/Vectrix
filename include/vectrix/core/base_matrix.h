@@ -399,7 +399,7 @@ namespace vtx {
 				}
 			}
 
-			return vtx::sqrt(sum);
+			return sqrt(sum);
 		}
 
 		// Matrix-vector multiplication (for MxN matrix and Nx1 vector)
