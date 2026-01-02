@@ -399,7 +399,7 @@ namespace vtx {
 				}
 			}
 
-			return sqrt(sum);
+			return vtx::math::sqrt(sum);
 		}
 
 		// Matrix-vector multiplication (for MxN matrix and Nx1 vector)
@@ -417,9 +417,9 @@ namespace vtx {
 			return result;
 		}
 
-		constexpr size_t rows() const noexcept { return M; }
+		static constexpr size_t rows() noexcept { return M; }
 
-		constexpr size_t cols() const noexcept { return N; }
+		static constexpr size_t cols() noexcept { return N; }
 
 	private:
 		T elements[M][N];
